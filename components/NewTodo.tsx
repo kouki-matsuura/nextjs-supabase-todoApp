@@ -1,17 +1,40 @@
 import { useState } from "react";
-import supabase from "../utils/supabase"
+import { PrismaClient } from "@prisma/client";
+import { useRouter } from "next/router";
+import { QueryClient, useMutation, useQueryClient } from "@tanstack/react-query";
+export const NewTodo = () => {
 
-export const NewTodo = ({ reload }:any ) => {
     const [title, setTitle] = useState('');
-    const addTodo = async (e : any) => {
-        e.preventDefault();
-        await supabase.from('todos').insert({ title })
-        reload();
-        setTitle('')
+    const queryClient = useQueryClient();
+
+    const addTodo = async () => {
+        const res = await fetch("http://localhost:3000/api/post", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                title: title,
+                is_complete: false,
+                created_at: new Date(),
+            })
+        })
     }
 
+    const addMutation = useMutation(addTodo, {
+        onSuccess: () => {
+            console.log("useMutation")
+            queryClient.invalidateQueries(['getTodos'])
+        },
+    })
+
+    const handleSubmit = (e:any) => {
+        e.preventDefault();
+        addMutation.mutate();
+        setTitle('');
+    }
     return (
-        <form onSubmit={addTodo}>
+        <form onSubmit={handleSubmit}>
             <input value={title} onChange={(e) => setTitle(e.target.value)} />
         </form>
     )

@@ -1,26 +1,32 @@
 import { useState, useEffect } from 'react'
 import styles from '../styles/Home.module.css'
-import supabase from '../utils/supabase'
 import { NewTodo } from '../components/NewTodo'
 import { Data } from '../components/types/data.type' 
+import { useQuery } from '@tanstack/react-query'
 
-export default function Home() {
-  const [todos, setTodos] = useState<Data[]>([])
-  const fetchTodos = async () => {
-    const { data } : any = await supabase.from('todos').select('*')
-    setTodos(data)
+const Home = () => {
+  const [todos, setTodos] = useState<Data[]>([]);
+
+  const getTodo = async () => {
+    const res = await fetch("http://localhost:3000/api/get").then(
+      (response) => {
+        return response.json()
+      }
+      
+    );
+    setTodos(res.toDo)
   }
-
-  useEffect(() => {
-    fetchTodos()
-  }, [])
-
+  const { isLoading } = useQuery(['getTodos'], () => getTodo(), {
+    refetchOnWindowFocus: false,
+  }) 
   return (
     <div className={styles.container}>
-      <NewTodo reload={fetchTodos} />
+      <NewTodo/>
       {todos.map ((todo) => (
         <p key={todo.id}>{todo.title}</p>
       ))}
     </div>
   )
 }
+
+export default Home;
