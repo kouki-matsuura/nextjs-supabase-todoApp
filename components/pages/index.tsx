@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import styles from '../styles/Home.module.css'
-import { NewTodo } from '../components/NewTodo'
-import { Data } from '../components/types/data.type' 
+import { NewTodo } from '../atoms/NewTodo'
+import { Data } from '../types/data.type' 
 import { useQuery } from '@tanstack/react-query'
 
 const Home = () => {
