@@ -1,12 +1,10 @@
 import { useState } from "react";
 import { PrismaClient } from "@prisma/client";
 import { useRouter } from "next/router";
-import { QueryClient, useMutation, useQueryClient } from "@tanstack/react-query";
-export const NewTodo = () => {
-
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+export const useAddTodo = () => { 
     const [title, setTitle] = useState('');
     const queryClient = useQueryClient();
-
     const addTodo = async () => {
         const res = await fetch("http://localhost:3000/api/post", {
             method: "POST",
@@ -27,15 +25,17 @@ export const NewTodo = () => {
             queryClient.invalidateQueries(['getTodos'])
         },
     })
-
+    
     const handleSubmit = (e:any) => {
-        e.preventDefault();
-        addMutation.mutate();
-        setTitle('');
+    e.preventDefault();
+    addMutation.mutate();
+    setTitle('');
     }
-    return (
-        <form onSubmit={handleSubmit}>
-            <input value={title} onChange={(e) => setTitle(e.target.value)} />
-        </form>
-    )
+
+    return { title, setTitle, handleSubmit};
+
 }
+
+
+
+
