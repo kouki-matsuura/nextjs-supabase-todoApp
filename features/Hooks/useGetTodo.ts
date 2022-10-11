@@ -6,7 +6,9 @@ export const useGetTodo = () => {
     const [todos, setTodos] = useState<Data[]>([]);
 
     const getTodo = async () => {
-        const res = await fetch("http://localhost:3000/api/get").then(
+        const res = await fetch("http://localhost:3000/api/get",{
+          mode: "cors"
+        }).then(
           (response) => {
             return response.json()
           }
