@@ -7,6 +7,7 @@ export const useAddTodo = () => {
     const queryClient = useQueryClient();
     const addTodo = async () => {
         const res = await fetch("http://localhost:3000/api/post", {
+            mode: "cors",
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

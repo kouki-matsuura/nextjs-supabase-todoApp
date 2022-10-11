@@ -13,6 +13,7 @@ export const useUpdateStatus = () => {
         console.log("updateID:", id);
         console.log("updatestatus:", status)
         const res = await fetch("http://localhost:3000/api/put", {
+            mode: "cors",
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
