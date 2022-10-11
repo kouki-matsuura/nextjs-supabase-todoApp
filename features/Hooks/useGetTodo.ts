@@ -7,7 +7,7 @@ export const useGetTodo = () => {
 
     const getTodo = async () => {
         const res = await fetch("http://localhost:3000/api/get",{
-          mode: "cors"
+          mode: "no-cors"
         }).then(
           (response) => {
             return response.json()
